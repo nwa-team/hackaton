@@ -1,16 +1,23 @@
-var path = require('path');
-var express = require('express');
+var path = require('path')
+var express = require('express')
 
-var app = express();
+var app = express()
 
+var staticPath = path.resolve(__dirname, '/public')
+app.use(express.static(staticPath))
 
-var staticPath = path.resolve(__dirname, '/public');
-app.use(express.static(staticPath));
-
+var Watson = require('./watson')
+var watson = new Watson();
 app.get('/', function (req, res) {
-    res.send("Hello hack.summmit()");
-});
 
-app.listen(3000, function() {
-  console.log('listening');
-});
+
+  var callback = function (text) {
+    res.send(text)
+  }
+
+  watson.extractRelationship('Cloud Foundry provides your credentials in JSON format.', callback)
+})
+
+app.listen(3000, function () {
+  console.log('listening')
+})
