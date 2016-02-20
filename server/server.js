@@ -36,7 +36,8 @@ app.get('/getMovies', (req, res) => {
 });
 
 app.get('/setMovies', (req, res) => {
-    omdb.getNewMovies().then((movies) => {
+    var mv = omdb.getNewMovies()
+    mv.then((movies) => {
         dataStore.setMovies(movies)
         res.send("Ok");
     }).catch((err) => res.send(err));
