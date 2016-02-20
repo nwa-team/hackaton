@@ -1,0 +1,27 @@
+# SERVER
+/server/node_modules/
+/server/dist
+/server/tmp
+
+#CLIENT
+# compiled output
+/client/dist
+/client/tmp
+
+# dependencies
+/client/node_modules
+/client/bower_components
+
+# misc
+/client/.sass-cache
+/client/connect.lock
+/client/coverage/*
+/client/libpeerconnection.log
+/clientnpm-debug.log
+/clienttestem.log
+/client/typings
+
+# e2e
+/client/e2e/*.js
+/client/e2e/*.map
+
