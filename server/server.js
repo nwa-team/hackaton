@@ -7,13 +7,9 @@ var staticPath = path.resolve(__dirname, '/public')
 app.use(express.static(staticPath))
 
 var Watson = require('./watson')
-var watson = new Watson();
-app.get('/testWatson', function (req, res) {
-    var callback = function (text) {
-        res.send(text)
-    }
 
-    watson.extractRelationship('Cloud Foundry provides your credentials in JSON format.', callback)
+app.get('/testWatson', function (req, res) {
+
 });
 
 var Omdb = require('./omdb');
