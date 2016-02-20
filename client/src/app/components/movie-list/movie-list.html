@@ -1,6 +1,3 @@
-<p>
-  movie-list Works!
-  
-  <movie-display></movie-display>
-
-</p>
+<div *ngFor="#mv of movies"> 
+    <movie-display [movie]="mv"></movie-display>
+</div>
