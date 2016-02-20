@@ -10,7 +10,6 @@ var Watson = require('./watson')
 var watson = new Watson();
 app.get('/testWatson', function (req, res) {
 
-
   var callback = function (text) {
     res.send(text)
   }
@@ -31,7 +30,8 @@ app.get('/getMovie', function (req, res) {
 })
 
 app.get('/getMovies', function (req, res) {
-    omdb.getNewMovies().then((movies) => res.send(movies));
+    omdb.getNewMovies().then((movies) => res.send(movies))
+                       .catch((err) => res.send(err));
 })
 
 app.listen(3000, function () {
