@@ -8,7 +8,7 @@ app.use(express.static(staticPath))
 
 var Watson = require('./watson')
 var watson = new Watson();
-app.get('/', function (req, res) {
+app.get('/testWatson', function (req, res) {
 
 
   var callback = function (text) {
@@ -16,6 +16,17 @@ app.get('/', function (req, res) {
   }
 
   watson.extractRelationship('Cloud Foundry provides your credentials in JSON format.', callback)
+})
+
+
+var Omdb = require('./omdb')
+var omdb = new Omdb();
+app.get('/getMovies', function (req, res) {
+
+  var callback = function(text) {
+    res.send(text)
+  }
+  omdb.getMovie(callback, 'Matrix');
 })
 
 app.listen(3000, function () {
