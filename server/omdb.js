@@ -58,7 +58,8 @@ class Omdb {
         return {
             name: movie.title,
             id: movie.id,
-            posterUrl: movie.poster_path
+            posterUrl: movie.poster_path,
+            type: 'movie'
         }
     }
 
