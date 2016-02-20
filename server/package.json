@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cradle": "^0.7.1",
     "express": "^4.13.4",
     "watson-developer-cloud": "^1.2.3"
   }
