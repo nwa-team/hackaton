@@ -1,3 +1,7 @@
-<div *ngFor="#mv of movies"> 
-    <movie-display [movie]="mv"></movie-display>
+<div class="container">
+    <div class="row">
+        <div *ngFor="#mv of movies" class="three columns"> 
+            <movie-display [movie]="mv"></movie-display>
+        </div>
+     <div>
 </div>

@@ -1,0 +1,6 @@
+.movie {
+    border: 1px dotted black;
+    display: inline-block;
+    margin-right:20px;
+    margin-bottom:20px;
+}

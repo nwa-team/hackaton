@@ -13,8 +13,8 @@ export class MovieDisplay implements OnInit {
     height: number;
 
     ngOnInit() {
-        let desiredWidth = 786 * this.movie.hype / 100;
-        let desireHeight = 1164 * this.movie.hype / 100;
+        let desiredWidth = 786 * this.movie.hype / 50;
+        let desireHeight = 1164 * this.movie.hype / 50;
         let size = this.calculateAspectRatioFit(786, 1164, desiredWidth, desireHeight);
         this.width = size.width;
         this.height = size.height;
