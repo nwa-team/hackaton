@@ -21,12 +21,17 @@ app.get('/testWatson', function (req, res) {
 
 var Omdb = require('./omdb')
 var omdb = new Omdb();
-app.get('/getMovies', function (req, res) {
+
+app.get('/getMovie', function (req, res) {
 
   var callback = function(text) {
     res.send(text)
   }
   omdb.getMovie(callback, 'Matrix');
+})
+
+app.get('/getMovies', function (req, res) {
+    omdb.getNewMovies().then((movies) => res.send(movies));
 })
 
 app.listen(3000, function () {
