@@ -1,6 +1,4 @@
 # hackaton
 
 
-Dev For client:
-npm install
-ng serve
+Movies Hype Generator
