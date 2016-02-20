@@ -1,32 +1,23 @@
-var path = require('path');
-var express = require('express');
+var path = require('path')
+var express = require('express')
 
-var app = express();
+var app = express()
 
-var watson = require('watson-developer-cloud');
+var staticPath = path.resolve(__dirname, '/public')
+app.use(express.static(staticPath))
 
-var relationship_extraction = watson.relationship_extraction({
-  username: 'username',
-  password: 'password',
-  version: 'v1-beta'
-});
-
-var staticPath = path.resolve(__dirname, '/public');
-app.use(express.static(staticPath));
-
+var Watson = require('./watson')
+var watson = new Watson();
 app.get('/', function (req, res) {
-    
-  relationship_extraction.extract({
-    text: 'IBM Watson developer cloud',
-    dataset: 'ie-en-news' },
-    function (err, response) {
-        if (err)
-        console.log('error:', err);
-        else
-         res.send(JSON.stringify(response, null, 2));
-    });
-});
 
-app.listen(3000, function() {
-  console.log('listening');
-});
+
+  var callback = function (text) {
+    res.send(text)
+  }
+
+  watson.extractRelationship('Cloud Foundry provides your credentials in JSON format.', callback)
+})
+
+app.listen(3000, function () {
+  console.log('listening')
+})
