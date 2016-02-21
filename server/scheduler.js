@@ -44,7 +44,8 @@ class Scheduler {
 // Use watson api to compute movie hype
 // Gets a list of movies and a callback
 function computeHype(moviesList, callback) {
-    
+    console.log('computing hype');
+    console.log(moviesList);
 }
 
 module.exports = Scheduler;
