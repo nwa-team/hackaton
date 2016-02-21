@@ -41,11 +41,44 @@ class Scheduler {
     }
 }
 
+var rssfeeds = [
+  'https://movieweb.com/rss/movie-reviews/',
+  'https://movieweb.com/rss/new-movies/',
+  'https://movieweb.com/rss/all-news/',
+  'https://movieweb.com/rss/movie-trailers/',
+  'https://movieweb.com/rss/new-movies/',
+  'https://movieweb.com/rss/tv-news/',
+  'https://movieweb.com/rss/casting-news/',
+  'https://movieweb.com/rss/dvd-bluray-news/',
+  'https://movieweb.com/rss/celebrity-interviews/',
+  'http://www.fandango.com/rss/top10boxoffice.rss',
+  'http://www.fandango.com/rss/newmovies.rss',
+  'http://feeds.feedburner.com/thr/film',
+  'http://www.cinemablend.com/rss_preview.php',
+  'http://www.cinemablend.com/rss_television.xml',
+  'http://www.cinemablend.com/rss_review.php',
+  'http://www.cinemablend.com/rss.php',
+  'http://feeds2.feedburner.com/slashfilm',
+  'http://feeds.feedburner.com/WeGotThisCoveredMovies',
+  'http://www.movies.com/rss-feeds/movie-news-rss',
+  'http://www.movies.com/rss-feeds/top-ten-box-office-rss',
+  'http://www.movies.com/rss-feeds/dave-white-reviews-rss',
+  'http://www.movies.com/rss-feeds/new-on-dvd-rss'
+]
+
+
+var hyper = require('./hyper')
+
 // Use watson api to compute movie hype
 // Gets a list of movies and a callback
 function computeHype(moviesList, callback) {
     console.log('computing hype');
-    console.log(moviesList);
+    hyper.hypeRssFeeds(rssfeeds,moviesList,function(){
+        hyper.hypeTwitter(moviesList,function(){
+            callback(moviesList)
+            console.log('done computing hype');
+        })
+    })
 }
 
 module.exports = Scheduler;
