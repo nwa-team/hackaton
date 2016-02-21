@@ -34,16 +34,17 @@ var dataStore = new Db();
 
 // Pass q parameter in the query for the movie name
 // Returns detailed information about specific movie
-app.get('/getMovie', function (req, res) {
-    omdb.getMovie((movieInfo) => res.send(movieInfo), req.query.q);
-});
+app.get('/getMovie', (req, res) => 
+    omdb.getMovie((movieInfo) => res.send(movieInfo), req.query.q));
 
 // Returns the list of movies, with basic information
-app.get('/getMovies', (req, res) => {
-    dataStore.getMovies((docs) => {
-        res.send(docs);
-    });
-});
+app.get('/getMovies', (req, res) => 
+    dataStore.getMovies((docs) => res.send(docs))
+);
+
+app.get('/', (req, res) => {
+    res.send('Make everything ok!');
+})
 
 // Start server
 app.listen(3000, function () {
