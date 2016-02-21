@@ -17,7 +17,7 @@ var moviesUpdate = new CronJob({
     cronTime: '00 30 11 * * 1-7',
     onTick: updater.scheduleMoviesFetching,
     start: true,
-    runOnInit: runScheduledActionsOnStart
+    runOnInit: true
 });
 var hypeUpdate = new CronJob({
     cronTime: '00 00 4 * * *',

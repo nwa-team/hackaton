@@ -5,14 +5,12 @@ var rp = require('request-promise');
 var Db = require('./db');
 var dataStore = new Db();
 
-var sleep = require('sleep');
 var consts = require('./keys');
 
 class Omdb {
     constructor() {
         this.host = 'http://www.omdbapi.com/';
         this.tmdbUri = 'http://api.themoviedb.org/3/';
-        this.youtubeApi = 'https://www.googleapis.com/youtube/v3/search';
         this.apiKey = consts.ApiKey;
     }
 
@@ -43,11 +41,14 @@ class Omdb {
 
     updateMoviesWithTrailers() {
         dataStore.getMovies((mv) => {
+            var delay = 2;
             mv.forEach((movie) => {
-                sleep.sleep(2);
-                this._getTrailer(movie.name)
-                    .then((trailer) => dataStore.update(movie._id, { trailerId: trailer }));
-            });
+                if (mv) {
+                    setTimeout(
+                        _getTrailer(movie.name)
+                            .then((trailer) => dataStore.update(movie._id, { trailerId: trailer })), delay * 1000);
+                    delay += 2;
+                }});
         });
     }
 
@@ -76,15 +77,15 @@ class Omdb {
             trailerId: ''
         }
     }
+}
 
-    _getTrailer(movieName) {
-        let searchQuery = movieName + ' trailer';
-        let url = `${this.youtubeApi}?part=snippet&q=${searchQuery}&key=${consts.YoutubeApiKey}`;
-        return rp({
-            uri: url,
-            json: true
-        }).then((inf) => inf.items[0].id.videoId);
-    }
+function _getTrailer(movieName) {
+    let searchQuery = movieName + ' trailer';
+    let url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${searchQuery}&key=${consts.YoutubeApiKey}`;
+    return rp({
+        uri: url,
+        json: true
+    }).then((inf) => inf.items[0].id.videoId);
 }
 
 module.exports = Omdb;

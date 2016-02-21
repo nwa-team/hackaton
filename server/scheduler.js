@@ -9,6 +9,7 @@ var dataStore = new Db();
 class Scheduler {
     scheduleMoviesFetching() {
         console.log('fetching list of movies...');
+        dataStore.deleteAll();
         // Get movies 
         var mv = omdb.getNewMovies();
         mv.then((movies) => {

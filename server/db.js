@@ -28,6 +28,11 @@ class DataStore {
             console.log(err);
         })
     }
+    
+    deleteAll() {
+        this.db.destroy();
+        this.db.create();
+    }
 }
 
 module.exports = DataStore;
