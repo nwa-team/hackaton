@@ -10,23 +10,19 @@ app.use('/', express.static('public'));
 var Scheduler = require('./scheduler');
 var updater = new Scheduler();
 
-var runScheduledActionsOnStart = false;
-
 var CronJob = require('cron').CronJob;
 var moviesUpdate = new CronJob({
     cronTime: '00 30 11 * * 1-7',
     onTick: updater.scheduleMoviesFetching,
     start: true,
-    runOnInit: runScheduledActionsOnStart
+    runOnInit: true
 });
 var hypeUpdate = new CronJob({
     cronTime: '00 00 4 * * *',
     onTick: updater.scheduleHypeUpdate,
-    start: false,
-    runOnInit: runScheduledActionsOnStart
+    start: true,
+    runOnInit: false
 });
-
-setTimeout(hypeUpdate.start, 5000);
 
 var Omdb = require('./omdb');
 var omdb = new Omdb();

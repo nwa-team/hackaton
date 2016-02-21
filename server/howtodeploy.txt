@@ -1,0 +1,22 @@
+- one can use git to fetch the source code from github to the VM
+- server files can by anywhere, eg Applications/..., static files should be put in web folders so they are served by apache
+(it's best this way, and the only way to comply with the rules. node cannot bind to 8080 port so the link will not work without adding 3000)
+(this is not a problem for client calls to API, just use correct url)
+
+- node needs to be updated(installed) to the latest version
+sudo npm cache clean -f
+sudo npm install -g n
+sudo n stable
+
+Alternative way to fix this thing:
+curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+- couch db needs to be installed ( and configured to accept connections only from localhost )
+sudo apt-get install curl
+sudo apt-get install couchdb
+curl localhost:5984
+
+- node server can be started with node server.js, if no errors, all good
+or if installed with nodejs, then nodejs server.js
+

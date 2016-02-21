@@ -18,6 +18,9 @@ class Scheduler {
         
         // Wait a bit and update trailers
         setTimeout(omdb.updateMoviesWithTrailers, 2000);
+        
+        // New movies, so we need to hype values
+        setTimeout(this.scheduleHypeUpdate, 120000);
     }
 
     scheduleHypeUpdate() {

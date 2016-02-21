@@ -41,14 +41,10 @@ class Omdb {
 
     updateMoviesWithTrailers() {
         dataStore.getMovies((mv) => {
-            var delay = 2;
             mv.forEach((movie) => {
-                if (mv) {
-                    setTimeout(
                         _getTrailer(movie.name)
-                            .then((trailer) => dataStore.update(movie._id, { trailerId: trailer })), delay * 1000);
-                    delay += 2;
-                }});
+                            .then((trailer) => dataStore.update(movie._id, { trailerId: trailer }))
+                });
         });
     }
 
