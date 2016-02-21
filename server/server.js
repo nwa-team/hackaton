@@ -4,7 +4,7 @@ var express = require('express')
 var app = express()
 
 var staticPath = path.resolve(__dirname, '/public')
-app.use('/', express.static('public'));
+app.use('/', express.static('public'));  
 
 // Schedule update jobs
 var Scheduler = require('./scheduler');
