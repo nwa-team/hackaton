@@ -31,11 +31,16 @@ app.get('/getMovies', (req, res) => {
     });
 });
 
+app.get('/updateMovies', (req, res) => {
+   omdb.updateMoviesWithTrailers();
+   res.send('ok'); 
+});
+
 app.get('/setMovies', (req, res) => {
     var mv = omdb.getNewMovies()
     mv.then((movies) => {
         dataStore.setMovies(movies)
-        res.send("Ok");
+        res.send('Ok');
     }).catch((err) => res.send(err));
     
 });

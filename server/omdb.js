@@ -2,6 +2,11 @@
 var request = require('request');
 var rp = require('request-promise');
 
+var db = require('./db');
+var dataStore = new db();
+
+var sleep = require('sleep');
+
 var consts = require('./keys');
 
 class Omdb {
@@ -51,11 +56,7 @@ class Omdb {
                 newMovies = newMovies.concat(body.results);
                 newMovies = newMovies.map((mv) => this._nicefyMovie(mv));
                 
-                var promises = [];
-                newMovies.forEach((i) => promises.push(this.getTrailer(i.name)
-                                             .then((t) => i.trailerId = t)));
-                
-                return Promise.all(promises).then((_) => newMovies);
+                return newMovies;
             });
     }
 
@@ -67,6 +68,18 @@ class Omdb {
             date: movie.release_date,
             trailerId: ''
         }
+    }
+    
+    updateMoviesWithTrailers() {
+        dataStore.getMovies((mv) => {
+           mv.forEach((i) => {
+              sleep.sleep(2);
+              console.log(i._id);
+              
+              this.getTrailer(i.name)
+                  .then((t) => dataStore.update(i._id, { trailerId: t}));
+           });
+        });
     }
     
     getTrailer(movieName) {
