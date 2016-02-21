@@ -6,39 +6,41 @@ var omdb = new Omdb();
 var Db = require('./db')
 var dataStore = new Db();
 
-var sleep = require('sleep');
-
 class Scheduler {
     scheduleMoviesFetching() {
         console.log('fetching list of movies...');
-        // get movies 
+        // Get movies 
         var mv = omdb.getNewMovies();
         mv.then((movies) => {
             dataStore.setMovies(movies);
         }).catch((err) => console.log(err));
         
-        // wait a bit
-        sleep.sleep(2);
-
-        // update 
-        omdb.updateMoviesWithTrailers();
+        // Wait a bit and update trailers
+        setTimeout(omdb.updateMoviesWithTrailers, 2000);
     }
 
     scheduleHypeUpdate() {
         console.log('compute hype values...');
         dataStore.getMovies((mv) => {
-            mv.forEach((i) => {
-                computeHype(i.name)
-                    .then((t) => dataStore.update(i._id, { hype: t }));
-            });
+            
+            var hypeInput = mv.map((m) => { return {
+                name: m.name,
+                id: m._id,
+                score: 0,
+                matches: 0 }});
+            
+            computeHype(hypeInput, (hypeMovies) => 
+                hypeMovies.forEach((i) => {
+                   dataStore.update(i.id, { hype: i.score });
+                }));
         });
     }
 }
 
 // Use watson api to compute movie hype
-// Returns a promise
-function computeHype(movieName) {
-    return Promise.resolve(Math.round(Math.random() * 10) + 1);
+// Gets a list of movies and a callback
+function computeHype(moviesList, callback) {
+    
 }
 
 module.exports = Scheduler;

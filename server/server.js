@@ -4,7 +4,7 @@ var express = require('express')
 var app = express()
 
 var staticPath = path.resolve(__dirname, '/public')
-app.use(express.static(staticPath))
+app.use('/', express.static('public'));
 
 // Schedule update jobs
 var Scheduler = require('./scheduler');
@@ -41,10 +41,6 @@ app.get('/getMovie', (req, res) =>
 app.get('/getMovies', (req, res) => 
     dataStore.getMovies((docs) => res.send(docs))
 );
-
-app.get('/', (req, res) => {
-    res.send('Make everything ok!');
-})
 
 // Start server
 app.listen(3000, function () {
