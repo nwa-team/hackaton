@@ -17,7 +17,7 @@ function computeMetions (matchList, mentions) {
       matchList.forEach(function (match) {
         if (matchToCompute(mention.text, match.name)) {
           match.matches += 1
-          match.score += match.score * parseFloat(mention.corefScore) * parseFloat(mention.score) / match.matches
+          match.score += parseFloat(mention.corefScore) * parseFloat(mention.score)
         }
       })
     })

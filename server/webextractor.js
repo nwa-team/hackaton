@@ -4,23 +4,27 @@ var extractor = require('unfluff')
 var async = require('async')
 
 function getRssArticles (rssfeed, numberOfArticles, callback) {
-   console.log('feed from '+ rssfeed)
   var result = []
   feed(rssfeed, function (err, articles) {
-    articles = articles.slice(0, numberOfArticles)
-    async.each(
-      articles,
-      function (article, done) {
-        getArticle(article.link, function (info) {
-          result.push(info)
-          done()
-        })
-      },
-      function (err) {
+    if (articles) {
+      articles = articles.slice(0, numberOfArticles)
+      async.each(
+        articles,
+        function (article, done) {
+          getArticle(article.link, function (info) {
+            result.push(info)
+            done()
+          })
+        },
+        function (err) {
+          callback(result)
+        }
+      )
+    }else{
         callback(result)
-      }
-    )
+    }
   })
+
 }
 
 function getArticle (url, callback) {
@@ -35,14 +39,11 @@ function getArticle (url, callback) {
 }
 
 function scrapeUrl (url, callback) {
-    
   request(url, function (error, response, html) {
     if (!error) {
-        
       callback(html)
-    }
-    else{
-        console.log(error)
+    } else {
+      console.log(error)
     }
   })
 }
