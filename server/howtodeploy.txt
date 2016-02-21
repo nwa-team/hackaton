@@ -20,3 +20,4 @@ curl localhost:5984
 - node server can be started with node server.js, if no errors, all good
 or if installed with nodejs, then nodejs server.js
 
+- API keys need to be manually added to the file on the VM
