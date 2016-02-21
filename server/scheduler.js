@@ -3,14 +3,13 @@
 var Omdb = require('./omdb');
 var omdb = new Omdb();
 
-var db = require('./db')
-var dataStore = new db();
+var Db = require('./db')
+var dataStore = new Db();
 
 var sleep = require('sleep');
 
 class Scheduler {
     scheduleMoviesFetching() {
-        
         // get movies 
         var mv = omdb.getNewMovies();
         mv.then((movies) => {
@@ -22,6 +21,21 @@ class Scheduler {
 
         // update 
         omdb.updateMoviesWithTrailers();
+    }
+    
+    scheduleHypeUpdate() {
+         dataStore.getMovies((mv) => {
+           mv.forEach((i) => {
+              this.computeHype(i.name)
+                  .then((t) => dataStore.update(i._id, { hype: t}));
+           });
+        });
+    }
+    
+    // Use watson api to compute movie hype
+    // Returns a promise
+    computeHype(movieName) {
+        Promise.resolve(Math.round(Math.random() * 10) + 1);
     }
 }
 
