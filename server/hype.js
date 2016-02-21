@@ -12,25 +12,37 @@ function compute (matchList, watsonResult, callback) {
 }
 
 function computeMetions (matchList, mentions) {
-  mentions.forEach(function (mention) {
-    matchList.forEach(function (match) {
-      if (match.name.toLowerCase() == mention.text.toLowerCase()) {
-        match.score += parseFloat(mention.corefScore) + parseFloat(mention.score) + 0.01
-      }
-    })
-  })
-}
-
-function computeEntities (matchList, entities) {
-  entities.forEach(function (entity) {
-    entity.mentref.forEach(function (mentref) {
+  if (mentions) {
+    mentions.forEach(function (mention) {
       matchList.forEach(function (match) {
-        if (match.name.toLowerCase() == mentref.text.toLowerCase()) {
-          match.score += parseFloat(entity.score)
+        if (matchToCompute(mention.text, match.name)) {
+          match.matches += 1
+          match.score += match.score * parseFloat(mention.corefScore) * parseFloat(mention.score) / match.matches
         }
       })
     })
-  })
+  }
+}
+
+function computeEntities (matchList, entities) {
+  if (entities) {
+    entities.forEach(function (entity) {
+      entity.mentref.forEach(function (mentref) {
+        matchList.forEach(function (match) {
+          if (matchToCompute(mentref.text, match.name)) {
+            match.matches += 1
+            match.score += parseFloat(entity.score)
+          }
+        })
+      })
+    })
+  }
+}
+
+
+
+function matchToCompute (text, value) {
+  return text.toLowerCase().indexOf(value.toLowerCase()) > -1
 }
 
 module.exports = {

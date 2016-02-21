@@ -1,6 +1,6 @@
 var watson = require('./watson')
 var async = require('async')
-var rssextractor = require('./rssextractor')
+var webextractor = require('./webextractor')
 var hype = require('./hype')
 
 function hypeRssFeeds (rssfeeds, matchList, callback) {
@@ -16,7 +16,7 @@ function hypeRssFeeds (rssfeeds, matchList, callback) {
 }
 
 function analyzeRssfeed (rssfeed, matchList, callback) {
-  rssextractor.getArticles(rssfeed, 1000, function (articles) {
+  webextractor.getRssArticles(rssfeed, 100, function (articles) {
     async.each(
       articles,
       function (article, done) {
@@ -31,7 +31,7 @@ function analyzeRssfeed (rssfeed, matchList, callback) {
 }
 
 function analyzeArticle (article, matchList, callback) {
-  watson.analyse(article.title + article.softTitle + article.description + article.text, function (result) {
+  watson.analyse(article.title + ' ' + article.softTitle + ' ' + article.description + ' ' + article.text, function (result) {
     hype.compute(matchList, result, callback)
   })
 }
@@ -42,7 +42,24 @@ function hypeText (text, matchList, callback) {
   })
 }
 
+function hypeLinks (links, matchList, callback) {
+  async.each(
+    links,
+    function (link, done) {
+      webextractor.scrapeUrl(link, function (html) {
+        watson.analyse(html , function (result) {
+          hype.compute(matchList, result , done)
+        })
+      }),
+      function (err) {
+        callback()
+      }
+    }
+  )
+}
+
 module.exports = {
   hypeRssFeeds: hypeRssFeeds,
-  hypeText: hypeText
+  hypeText: hypeText,
+  hypeLinks: hypeLinks
 }

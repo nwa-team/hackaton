@@ -3,37 +3,51 @@ var feed = require('feed-read')
 var extractor = require('unfluff')
 var async = require('async')
 
-function getArticles(rssfeed,numberOfArticles, callback) {
-    
+function getRssArticles (rssfeed, numberOfArticles, callback) {
+   console.log('feed from '+ rssfeed)
   var result = []
   feed(rssfeed, function (err, articles) {
-    articles = articles.slice(0,numberOfArticles)
+    articles = articles.slice(0, numberOfArticles)
     async.each(
       articles,
       function (article, done) {
-        _getArticle(article.link, function (info) {
+        getArticle(article.link, function (info) {
           result.push(info)
           done()
         })
       },
       function (err) {
-         callback(result)
+        callback(result)
       }
     )
   })
 }
 
-function _getArticle (url,  callback) {
+function getArticle (url, callback) {
   var info = {}
   request(url, function (error, response, body) {
     if (!error && response.statusCode === 200) {
       info = extractor(body)
       info.link = url
     }
-     callback(info)
+    callback(info)
+  })
+}
+
+function scrapeUrl (url, callback) {
+    
+  request(url, function (error, response, html) {
+    if (!error) {
+        
+      callback(html)
+    }
+    else{
+        console.log(error)
+    }
   })
 }
 
 module.exports = {
-  getArticles: getArticles
+  getRssArticles: getRssArticles,
+  scrapeUrl: scrapeUrl
 }
