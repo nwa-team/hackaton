@@ -70,7 +70,8 @@ class Omdb {
             id: movie.id,
             posterUrl: movie.poster_path,
             date: movie.release_date,
-            trailerId: ''
+            trailerId: '',
+            hype: Math.round(Math.random() * 10) + 1
         }
     }
 }
