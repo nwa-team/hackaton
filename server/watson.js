@@ -1,8 +1,8 @@
 var watsonCloud = require('watson-developer-cloud')
 
 var relationship_extraction = watsonCloud.relationship_extraction({
-  username: 'bd2d8923-1a69-4d59-a3a9-a56e374b99fa',
-  password: 'M2KFNSlmQJJR',
+  username: '****',
+  password: '****',
   version: 'v1-beta'
 })
 

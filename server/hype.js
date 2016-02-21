@@ -39,10 +39,14 @@ function computeEntities (matchList, entities) {
   }
 }
 
-
-
 function matchToCompute (text, value) {
-  return text.toLowerCase().indexOf(value.toLowerCase()) > -1
+  var result = false
+  value.split(':').forEach(function (split) {
+    if (text.toLowerCase().indexOf(split.toLowerCase()) > -1) {
+      result = true
+    }
+  })
+  return result
 }
 
 module.exports = {
