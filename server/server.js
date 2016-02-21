@@ -17,14 +17,16 @@ var moviesUpdate = new CronJob({
     cronTime: '00 30 11 * * 1-7',
     onTick: updater.scheduleMoviesFetching,
     start: true,
-    runOnInit: true
+    runOnInit: runScheduledActionsOnStart
 });
 var hypeUpdate = new CronJob({
     cronTime: '00 00 4 * * *',
     onTick: updater.scheduleHypeUpdate,
-    start: true,
+    start: false,
     runOnInit: runScheduledActionsOnStart
 });
+
+setTimeout(hypeUpdate.start, 5000);
 
 var Omdb = require('./omdb');
 var omdb = new Omdb();
