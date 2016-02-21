@@ -12,6 +12,7 @@
   "dependencies": {
     "cradle": "^0.7.1",
     "express": "^4.13.4",
+    "node-cron": "^1.1.1",
     "request": "^2.69.0",
     "request-promise": "^2.0.1",
     "sleep": "^3.0.1",
