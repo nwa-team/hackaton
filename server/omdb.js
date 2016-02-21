@@ -2,11 +2,10 @@
 var request = require('request');
 var rp = require('request-promise');
 
-var db = require('./db');
-var dataStore = new db();
+var Db = require('./db');
+var dataStore = new Db();
 
 var sleep = require('sleep');
-
 var consts = require('./keys');
 
 class Omdb {
@@ -21,11 +20,34 @@ class Omdb {
         var url = this.host + '?t=' + title + '&?type=' + type + '&?y=' + year + '&?plot=' + plot + '&?r=json' + '&?tomatoes=' + tomatoes;
         request(url, function (error, response, body) {
             if (!error && response.statusCode === 200) {
-                console.log(body);
                 resultCallback(body);
             } else {
                 resultCallback(error)
             }
+        });
+    }
+
+    getNewMovies() {
+        var newMovies;
+        return this._getNowPlaying()
+            .then((body) => {
+                newMovies = body.results;
+                return this._getUpcoming();
+            })
+            .then((body) => {
+                newMovies = newMovies.concat(body.results);
+                newMovies = newMovies.map((mv) => this._nicefyMovie(mv));
+                return newMovies;
+            });
+    }
+
+    updateMoviesWithTrailers() {
+        dataStore.getMovies((mv) => {
+            mv.forEach((i) => {
+                sleep.sleep(2);
+                this._getTrailer(i.name)
+                    .then((t) => dataStore.update(i._id, { trailerId: t }));
+            });
         });
     }
 
@@ -45,21 +67,6 @@ class Omdb {
         });
     }
 
-    getNewMovies() {
-        var newMovies;
-        return this._getNowPlaying()
-            .then((body) => {
-                newMovies = body.results;
-                return this._getUpcoming();
-            })
-            .then((body) => {
-                newMovies = newMovies.concat(body.results);
-                newMovies = newMovies.map((mv) => this._nicefyMovie(mv));
-                
-                return newMovies;
-            });
-    }
-
     _nicefyMovie(movie) {
         return {
             name: movie.title,
@@ -69,20 +76,8 @@ class Omdb {
             trailerId: ''
         }
     }
-    
-    updateMoviesWithTrailers() {
-        dataStore.getMovies((mv) => {
-           mv.forEach((i) => {
-              sleep.sleep(2);
-              console.log(i._id);
-              
-              this.getTrailer(i.name)
-                  .then((t) => dataStore.update(i._id, { trailerId: t}));
-           });
-        });
-    }
-    
-    getTrailer(movieName) {
+
+    _getTrailer(movieName) {
         let searchQuery = movieName + ' trailer';
         let url = `${this.youtubeApi}?part=snippet&q=${searchQuery}&key=${consts.YoutubeApiKey}`;
         return rp({

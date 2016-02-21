@@ -10,6 +10,7 @@ var sleep = require('sleep');
 
 class Scheduler {
     scheduleMoviesFetching() {
+        console.log('fetching list of movies...');
         // get movies 
         var mv = omdb.getNewMovies();
         mv.then((movies) => {
@@ -22,21 +23,22 @@ class Scheduler {
         // update 
         omdb.updateMoviesWithTrailers();
     }
-    
+
     scheduleHypeUpdate() {
-         dataStore.getMovies((mv) => {
-           mv.forEach((i) => {
-              this.computeHype(i.name)
-                  .then((t) => dataStore.update(i._id, { hype: t}));
-           });
+        console.log('compute hype values...');
+        dataStore.getMovies((mv) => {
+            mv.forEach((i) => {
+                computeHype(i.name)
+                    .then((t) => dataStore.update(i._id, { hype: t }));
+            });
         });
     }
-    
-    // Use watson api to compute movie hype
-    // Returns a promise
-    computeHype(movieName) {
-        Promise.resolve(Math.round(Math.random() * 10) + 1);
-    }
+}
+
+// Use watson api to compute movie hype
+// Returns a promise
+function computeHype(movieName) {
+    return Promise.resolve(Math.round(Math.random() * 10) + 1);
 }
 
 module.exports = Scheduler;
