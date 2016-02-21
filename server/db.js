@@ -24,6 +24,13 @@
      setMovies(movies){
          this.db.save(movies);
      }
+     
+     update(id, updates){
+         this.db.merge(id, updates, (err, res) => {
+             console.log(err);
+             console.log(res);
+         })
+     }
  }
  
  module.exports = DataStore;

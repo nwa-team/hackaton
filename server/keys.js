@@ -1,5 +1,7 @@
-const ApiKey = "#apiKey";
+const ApiKey = "###";
+const YoutubeApiKey = "###";
 
 module.exports = {
-    ApiKey: ApiKey
+    ApiKey: ApiKey,
+    YoutubeApiKey: YoutubeApiKey
 };
